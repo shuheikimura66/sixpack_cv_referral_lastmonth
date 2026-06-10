@@ -24,9 +24,9 @@ json_creds = json.loads(os.environ["GCP_JSON"])
 # --- 設定 ---
 TARGET_URL = "https://asp1.six-pack.xyz/admin/log/action/list"
 SPREADSHEET_ID = os.environ.get("SPREADSHEET_ID")
-SHEET_NAME = "先月_action_raw"  # 変更1: Drive→Sheets用のシート名
+SHEET_NAME = "先月_action_raw"
 
-def update_google_sheet(csv_path):  # 変更2: upload_to_drive → update_google_sheet
+def update_google_sheet(csv_path):
     """CSVの中身を読み込んでスプレッドシートに張り付ける関数"""
     print(f"スプレッドシートへの転記を開始: {SHEET_NAME}")
     scopes = ['https://www.googleapis.com/auth/spreadsheets']
@@ -129,17 +129,17 @@ def main():
         except:
             pass
 
-        # --- 4. 「先月」ボタンをクリック ---  変更3: 日付入力 → 「先月」ボタン
-        print("「先月」ボタンを選択します...")
+        # --- 4. 「前月」ボタンをクリック（id="previous_month"で指定）---
+        print("「前月」ボタンを選択します...")
         try:
-            current_month_btn = wait.until(EC.element_to_be_clickable((By.XPATH, "//button[text()='先月']")))
-            driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", current_month_btn)
+            prev_month_btn = wait.until(EC.element_to_be_clickable((By.ID, "previous_month")))
+            driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", prev_month_btn)
             time.sleep(1)
-            current_month_btn.click()
-            print("「先月」ボタンをクリックしました")
+            prev_month_btn.click()
+            print("「前月」ボタンをクリックしました")
             time.sleep(3)
         except Exception as e:
-            print(f"「先月」ボタンの操作エラー: {e}")
+            print(f"「前月」ボタンの操作エラー: {e}")
 
         # --- 5. パートナー入力 ---
         print("パートナーを入力します...")
